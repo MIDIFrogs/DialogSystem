@@ -1,0 +1,189 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e25c3406bb7c046a8367b791f67289, type: 3}
+  m_Name: Demo story
+  m_EditorClassIdentifier: Assembly-CSharp::MIDIFrogs.DialogSystem.Unity.Data.DialogAsset
+  Nodes:
+  - _guid: 06e60a8d-0f03-4ace-89dd-84c3b4a23bc1
+    Text: "\u0422\u044B \u043F\u0440\u0438\u0445\u043E\u0434\u0438\u0448\u044C \u0432
+      \u0441\u0435\u0431\u044F \u0432 \u043D\u0435\u0437\u043D\u0430\u043A\u043E\u043C\u043E\u043C
+      \u043C\u0435\u0441\u0442\u0435."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: 
+    FrameSplash: {fileID: 0}
+    FontStyle: 2
+    Choices:
+    - Text: "\u041E\u0433\u043B\u044F\u0434\u0435\u0442\u044C\u0441\u044F"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: 212123d7-c401-4888-a183-5ec7c646ae44
+    - Text: "\u0417\u0430\u043A\u0440\u044B\u0442\u044C \u0433\u043B\u0430\u0437\u0430"
+      Conditions: []
+      Actions:
+      - {fileID: 11400000, guid: cc9e4812f2012554a9aba40e012f399b, type: 2}
+      NextNodeGuid: 6b22154e-c3cf-4f22-9121-d5e01729b578
+  - _guid: 212123d7-c401-4888-a183-5ec7c646ae44
+    Text: "\u0422\u044B \u0432\u0438\u0434\u0438\u0448\u044C \u0444\u0438\u0433\u0443\u0440\u0443,
+      \u0441\u0442\u043E\u044F\u0449\u0443\u044E \u043D\u0435\u043F\u043E\u0434\u0430\u043B\u0451\u043A\u0443"
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: "\u0421\u0435\u0440\u0438\u044F \u043F\u0440\u043E\u0432\u0435\u0440\u043E\u043A
+      + \u0423\u0441\u043B\u043E\u0432\u0438\u044F"
+    FrameSplash: {fileID: 0}
+    FontStyle: 2
+    Choices:
+    - Text: "\u041F\u043E\u0434\u043E\u0439\u0442\u0438"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: b6f083bb-7428-404d-8c2a-160dfc54fd61
+    - Text: "\u0421\u043F\u0440\u044F\u0442\u0430\u0442\u044C\u0441\u044F"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: 4e7c8160-eb0a-40ca-ab4a-c96db7e235fb
+  - _guid: b6f083bb-7428-404d-8c2a-160dfc54fd61
+    Text: "\u0422\u044B \u043D\u0430\u043A\u043E\u043D\u0435\u0446 \u043F\u0440\u043E\u0441\u043D\u0443\u043B\u0441\u044F"
+    Author: {fileID: 11400000, guid: 793bb8d5daef7c74a9750abcb47074f4, type: 2}
+    Voice: {fileID: 0}
+    GroupId: "\u0414\u0438\u0430\u043B\u043E\u0433 \u0441 \u043D\u0435\u0437\u043D\u0430\u043A\u043E\u043C\u0446\u0435\u043C"
+    FrameSplash: {fileID: 0}
+    FontStyle: 0
+    Choices:
+    - Text: "\u041A\u0442\u043E \u0442\u044B?"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: 7b091a73-ced3-4223-ac48-823a6e44935b
+    - Text: "\u0413\u0434\u0435 \u044F?"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: c36585ed-ac6e-46c4-91b5-fb2f59395d5e
+  - _guid: ee8f63fa-81ed-4b9c-a27a-1a46e555a672
+    Text: "\u0422\u044B \u043F\u0440\u0438\u043D\u0438\u043C\u0430\u0435\u0448\u044C
+      \u0440\u0435\u0448\u0435\u043D\u0438\u0435 \u0434\u0432\u0438\u0433\u0430\u0442\u044C\u0441\u044F
+      \u0432\u043F\u0435\u0440\u0451\u0434."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: "\u0412\u044B\u0431\u043E\u0440"
+    FrameSplash: {fileID: 0}
+    FontStyle: 0
+    Choices:
+    - Text: "\u0412\u043F\u0435\u0440\u0451\u0434 \u043A \u043F\u0440\u0438\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u044F\u043C!"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: 
+  - _guid: 7b091a73-ced3-4223-ac48-823a6e44935b
+    Text: "\u042D\u0442\u043E \u043D\u0435 \u0442\u0430\u043A \u0432\u0430\u0436\u043D\u043E.
+      \u0412\u0430\u0436\u043D\u043E \u2014 \u0437\u0430\u0447\u0435\u043C \u0442\u044B
+      \u0437\u0434\u0435\u0441\u044C."
+    Author: {fileID: 11400000, guid: 793bb8d5daef7c74a9750abcb47074f4, type: 2}
+    Voice: {fileID: 0}
+    GroupId: "\u0414\u0438\u0430\u043B\u043E\u0433 \u0441 \u043D\u0435\u0437\u043D\u0430\u043A\u043E\u043C\u0446\u0435\u043C"
+    FrameSplash: {fileID: 0}
+    FontStyle: 0
+    Choices:
+    - Text: "\u0421\u043B\u0443\u0448\u0430\u0442\u044C \u0434\u0430\u043B\u044C\u0448\u0435"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: c6818b69-fc66-47d9-b394-e6c852a6b3dd
+  - _guid: c6818b69-fc66-47d9-b394-e6c852a6b3dd
+    Text: "\u041E\u043D \u043F\u0440\u043E\u0442\u044F\u0433\u0438\u0432\u0430\u0435\u0442
+      \u0440\u0443\u043A\u0443."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: "\u0412\u044B\u0431\u043E\u0440"
+    FrameSplash: {fileID: 0}
+    FontStyle: 2
+    Choices:
+    - Text: "\u041F\u0440\u0438\u043D\u044F\u0442\u044C \u0440\u0443\u043A\u0443"
+      Conditions: []
+      Actions:
+      - {fileID: 11400000, guid: 159237af0e47fb749ac40f136f65d582, type: 2}
+      NextNodeGuid: ee8f63fa-81ed-4b9c-a27a-1a46e555a672
+    - Text: "\u041E\u0442\u043A\u0430\u0437\u0430\u0442\u044C\u0441\u044F"
+      Conditions: []
+      Actions:
+      - {fileID: 11400000, guid: d716f01235fb1184093b36d5e74a2045, type: 2}
+      NextNodeGuid: 30aa1a39-bca5-4f06-a18d-47f68b08c65f
+  - _guid: c36585ed-ac6e-46c4-91b5-fb2f59395d5e
+    Text: "\u0412 \u043C\u0435\u0441\u0442\u0435, \u0433\u0434\u0435 \u0440\u0435\u0448\u0430\u0435\u0442\u0441\u044F
+      \u0442\u0432\u043E\u044F \u0441\u0443\u0434\u044C\u0431\u0430."
+    Author: {fileID: 11400000, guid: 793bb8d5daef7c74a9750abcb47074f4, type: 2}
+    Voice: {fileID: 0}
+    GroupId: "\u0414\u0438\u0430\u043B\u043E\u0433 \u0441 \u043D\u0435\u0437\u043D\u0430\u043A\u043E\u043C\u0446\u0435\u043C"
+    FrameSplash: {fileID: 0}
+    FontStyle: 0
+    Choices:
+    - Text: "\u0421\u043B\u0443\u0448\u0430\u0442\u044C \u0434\u0430\u043B\u044C\u0448\u0435"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: c6818b69-fc66-47d9-b394-e6c852a6b3dd
+  - _guid: 4e7c8160-eb0a-40ca-ab4a-c96db7e235fb
+    Text: "\u0422\u044B \u043F\u044B\u0442\u0430\u0435\u0448\u044C\u0441\u044F \u0441\u043F\u0440\u044F\u0442\u0430\u0442\u044C\u0441\u044F,
+      \u043D\u043E \u0432\u0435\u0442\u043A\u0438 \u043F\u0440\u0435\u0434\u0430\u0442\u0435\u043B\u044C\u0441\u043A\u0438
+      \u0445\u0440\u0443\u0441\u0442\u044F\u0442."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: "\u0421\u0435\u0440\u0438\u044F \u043F\u0440\u043E\u0432\u0435\u0440\u043E\u043A
+      + \u0423\u0441\u043B\u043E\u0432\u0438\u044F"
+    FrameSplash: {fileID: 0}
+    FontStyle: 2
+    Choices:
+    - Text: "\u041F\u043E\u0434\u043E\u0439\u0442\u0438 \u043A \u043D\u0435\u0437\u043D\u0430\u043A\u043E\u043C\u0446\u0443"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: b6f083bb-7428-404d-8c2a-160dfc54fd61
+    - Text: "\u0417\u0430\u043C\u0435\u0440\u0435\u0442\u044C"
+      Conditions:
+      - {fileID: 11400000, guid: 39c27a4f984c2cf4abf6110ff5f2d474, type: 2}
+      Actions: []
+      NextNodeGuid: 8b2bd3e3-5439-429e-8ed4-07e11690a581
+  - _guid: 8b2bd3e3-5439-429e-8ed4-07e11690a581
+    Text: "\u041E\u043D \u0443\u0436\u0435 \u0437\u043D\u0430\u0435\u0442, \u0447\u0442\u043E
+      \u0442\u044B \u0437\u0434\u0435\u0441\u044C."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: "\u0421\u0435\u0440\u0438\u044F \u043F\u0440\u043E\u0432\u0435\u0440\u043E\u043A
+      + \u0423\u0441\u043B\u043E\u0432\u0438\u044F"
+    FrameSplash: {fileID: 0}
+    FontStyle: 2
+    Choices:
+    - Text: "\u0412\u044B\u0439\u0442\u0438 \u043D\u0430 \u0441\u0432\u0435\u0442"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: b6f083bb-7428-404d-8c2a-160dfc54fd61
+  - _guid: 6b22154e-c3cf-4f22-9121-d5e01729b578
+    Text: "\u0422\u044B \u043F\u044B\u0442\u0430\u0435\u0448\u044C\u0441\u044F \u0443\u0441\u043D\u0443\u0442\u044C,
+      \u043D\u043E \u0447\u0443\u0432\u0441\u0442\u0432\u043E \u0442\u0440\u0435\u0432\u043E\u0433\u0438
+      \u043D\u0435 \u043E\u0442\u043F\u0443\u0441\u043A\u0430\u0435\u0442..."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: 
+    FrameSplash: {fileID: 0}
+    FontStyle: 2
+    Choices:
+    - Text: "\u041E\u0442\u043A\u0440\u044B\u0442\u044C \u0433\u043B\u0430\u0437\u0430"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: 212123d7-c401-4888-a183-5ec7c646ae44
+  - _guid: 30aa1a39-bca5-4f06-a18d-47f68b08c65f
+    Text: "\u0422\u044B \u043E\u0442\u043A\u0430\u0437\u044B\u0432\u0430\u0435\u0448\u044C\u0441\u044F...
+      \u0438 \u0432\u0441\u0451 \u0438\u0441\u0447\u0435\u0437\u0430\u0435\u0442."
+    Author: {fileID: 0}
+    Voice: {fileID: 0}
+    GroupId: "\u0412\u044B\u0431\u043E\u0440"
+    FrameSplash: {fileID: 0}
+    FontStyle: 0
+    Choices:
+    - Text: "\u041F\u0440\u043E\u0441\u043D\u0443\u0442\u044C\u0441\u044F"
+      Conditions: []
+      Actions: []
+      NextNodeGuid: 

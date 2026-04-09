@@ -1,0 +1,29 @@
+{
+  "name": "com.midifrogs.dialogsystem",
+  "version": "1.0.0",
+  "displayName": "MIDIFrogs Dialog System",
+  "description": "Node-based dialog system with editor and runtime UI for Unity.",
+  "unity": "6000.3",
+  "keywords": [
+    "dialog",
+    "dialogue",
+    "narrative",
+    "node graph",
+    "ui",
+    "tool"
+  ],
+  "author": {
+    "name": "IOException"
+  },
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.6",
+    "com.cysharp.unitask": "2.5.0"
+  },
+  "samples": [
+    {
+      "displayName": "Basic Example",
+      "description": "Sample scene with dialog setup and UI prefabs",
+      "path": "Samples~/BasicExample"
+    }
+  ]
+}

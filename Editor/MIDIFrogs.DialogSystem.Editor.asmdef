@@ -1,0 +1,21 @@
+{
+    "name": "MIDIFrogs.DialogSystem.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:32526dc9dfc3d7848a08727ff780050e",
+        "GUID:a609ff403d206364baa3c692732babef",
+        "GUID:84746325d0b51c74896e627ce3449205",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
