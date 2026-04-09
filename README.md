@@ -14,6 +14,8 @@ Node-based dialog system for Unity with editor tooling and runtime UI.
 
 ## Installation
 
+> Note that [UniTask](https://github.com/Cysharp/UniTask) should be installed before adding this package
+
 ### Via Git URL
 
 Add package via Package Manager:
