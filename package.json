@@ -13,12 +13,14 @@
     "tool"
   ],
   "author": {
-    "name": "IOException"
+    "name": "MIDIFrogs",
+    "url": "https://github.com/MIDIFrogs"
   },
   "dependencies": {
     "com.unity.textmeshpro": "3.0.6",
     "com.cysharp.unitask": "2.5.0"
   },
+  "license": "MIT",
   "samples": [
     {
       "displayName": "Basic Example",
