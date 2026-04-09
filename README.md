@@ -130,7 +130,6 @@ You can:
 ## Text & Styling
 
 Supports:
-- TextMeshPro rich text
 - Custom font styles
 - Extendable text processing pipeline
 
@@ -154,4 +153,4 @@ Check `Samples~/BasicExample` for:
 
 ## License
 
-MIT (or your license here)
+MIT
