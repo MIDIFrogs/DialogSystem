@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "com.unity.textmeshpro": "3.0.6",
-    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.0"
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
   },
   "license": "MIT",
   "samples": [
