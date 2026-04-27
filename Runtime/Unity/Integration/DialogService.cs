@@ -5,10 +5,10 @@ using MIDIFrogs.DialogSystem.Unity.View;
 
 namespace MIDIFrogs.DialogSystem.Unity.Integration
 {
-    public class DialogService(IDialogView view)
+    public class DialogService
     {
-        private readonly IDialogView view = view;
-        private IDialogContext context = new DialogContext();
+        private readonly IDialogView view;
+        private IDialogContext context;
 
         private CancellationTokenSource flowControlSource;
 
@@ -21,6 +21,12 @@ namespace MIDIFrogs.DialogSystem.Unity.Integration
         public DialogService(IDialogView view, IDialogContext context) : this(view)
         {
             this.context = context;
+        }
+
+        public DialogService(IDialogView view)
+        {
+            this.view = view;
+            this.context = new DialogContext();
         }
 
         public void SetContext(IDialogContext context) => this.context = context;
