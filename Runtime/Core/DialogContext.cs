@@ -7,6 +7,8 @@ namespace MIDIFrogs.DialogSystem.Core
     {
         private readonly Dictionary<string, object> values = new();
 
+        public IReadOnlyCollection<KeyValuePair<string, object>> Records => values; 
+
         public T GetValue<T>(string key)
         {
             return values.TryGetValue(key, out var value) ? (T)value : ThrowKeyNotFoundException<T>();

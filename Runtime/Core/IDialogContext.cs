@@ -1,7 +1,11 @@
-﻿namespace MIDIFrogs.DialogSystem.Core
+﻿using System.Collections.Generic;
+
+namespace MIDIFrogs.DialogSystem.Core
 {
     public interface IDialogContext
     {
+        IReadOnlyCollection<KeyValuePair<string, object>> Records { get; }
+
         T GetValue<T>(string key);
 
         void SetValue<T>(string key, T value);
