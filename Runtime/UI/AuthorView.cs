@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 namespace MIDIFrogs.DialogSystem.UI
 {
+    /// <summary>Name (localized), colour and avatar from the author asset; an author without one shows only the name.</summary>
     public class AuthorView : MonoBehaviour, IAuthorView
     {
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private Image avatarImage;
 
-        public void ShowAuthor(DialogAuthor author)
+        public void ShowAuthor(DialogAuthor author, IDialogTextResolver text)
         {
             if (author == null)
             {
@@ -20,8 +21,9 @@ namespace MIDIFrogs.DialogSystem.UI
                 return;
             }
 
+            text ??= SourceTextResolver.Instance;
+            nameText.text = text.Resolve(author.NameKey, author.Name ?? string.Empty);
             var asset = author.Source as DialogAuthorAsset;
-            nameText.text = author.Name;
             if (asset != null)
             {
                 nameText.color = asset.NameColor;

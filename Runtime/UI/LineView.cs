@@ -1,26 +1,29 @@
-using MIDIFrogs.DialogSystem.Unity.View;
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
+using MIDIFrogs.DialogSystem.Unity.View;
 using TMPro;
 using UnityEngine;
 
 namespace MIDIFrogs.DialogSystem.UI
 {
+    /// <summary>Shows the whole line at once.</summary>
     public class LineView : MonoBehaviour, ILineView
     {
         [SerializeField] private TMP_Text text;
 
-        public UniTask ShowText(StyledText value, float? duration = null)
+        public bool IsTyping => false;
+
+        public UniTask ShowText(StyledText value, string resolvedText, float? duration, Action<int> onCharacter, CancellationToken token)
         {
-            text.text = value.Content;
-            text.fontStyle = (FontStyles)value.Style;
-            if (value.HasColor)
-            {
-                text.color = value.Color;
-            }
+            LineStyle.Apply(text, value, resolvedText);
+            text.maxVisibleCharacters = int.MaxValue;
             return UniTask.CompletedTask;
         }
 
-        public void Skip() { }
+        public void Complete()
+        {
+        }
     }
 }
