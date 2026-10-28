@@ -1,4 +1,4 @@
-﻿namespace MIDIFrogs.DialogSystem.Core
+namespace MIDIFrogs.DialogSystem.Core
 {
     public class BoolFlagCondition : IDialogCondition
     {
@@ -6,7 +6,7 @@
         public bool Expected;
 
         public bool Evaluate(IDialogContext context)
-            => context.TryGetValue(Id, out bool value) && value == Expected;
+            => context.TryGetValue(Id, out object value) && value is bool flag && flag == Expected;
     }
 
     public class SetFlagAction : IDialogAction
@@ -14,7 +14,6 @@
         public string Id;
         public bool Value;
 
-        public void Execute(IDialogContext context)
-            => context.SetValue<bool>(Id, Value);
+        public void Execute(IDialogContext context) => context.SetValue(Id, Value);
     }
 }

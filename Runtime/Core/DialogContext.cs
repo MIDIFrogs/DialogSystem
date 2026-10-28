@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
 
 namespace MIDIFrogs.DialogSystem.Core
 {
@@ -7,27 +6,10 @@ namespace MIDIFrogs.DialogSystem.Core
     {
         private readonly Dictionary<string, object> values = new();
 
-        public IReadOnlyCollection<KeyValuePair<string, object>> Records => values; 
+        public IEnumerable<KeyValuePair<string, object>> Records => values;
 
-        public T GetValue<T>(string key)
-        {
-            return values.TryGetValue(key, out var value) ? (T)value : ThrowKeyNotFoundException<T>();
-        }
+        public bool TryGetValue(string key, out object value) => values.TryGetValue(key, out value);
 
-        public void SetValue<T>(string key, T value) => values[key] = value;
-
-        public bool TryGetValue<T>(string key, out T value)
-        {
-            if (values.TryGetValue(key, out var v) && v is T t)
-            {
-                value = t;
-                return true;
-            }
-            value = default;
-            return false;
-        }
-
-        [DoesNotReturn]
-        private static T ThrowKeyNotFoundException<T>() => throw new KeyNotFoundException();
+        public void SetValue(string key, object value) => values[key] = value;
     }
 }
