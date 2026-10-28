@@ -28,7 +28,7 @@ namespace MIDIFrogs.DialogSystem.UI
 
         [Header("Typing sound")]
         [Tooltip("Used when the author has no typing sound.")]
-        [SerializeReference] private IDialogSound defaultTypingSound;
+        [SerializeReference, DialogSound] private IDialogSound defaultTypingSound;
         [SerializeField, Min(1)] private int defaultBlipEvery = 2;
         [SerializeField, Range(0f, 0.5f)] private float defaultPitchVariance = 0.05f;
 

@@ -21,8 +21,8 @@ namespace MIDIFrogs.DialogSystem.Editor.Settings
         [SerializeField] private ScriptableObject stringSink;
 
         [Header("Sound")]
-        [Tooltip("Typing sound for authors without their own.")]
-        [SerializeReference] private IDialogSound defaultTypingSound;
+        [Tooltip("Typing sound given to new authors.")]
+        [SerializeReference, DialogSound] private IDialogSound defaultTypingSound;
 
         public string DialogsPath => dialogsPath;
 

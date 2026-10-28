@@ -18,7 +18,7 @@ namespace MIDIFrogs.DialogSystem.Unity.Data
             public string Id = Guid.NewGuid().ToString("N");
             [TextArea] public string Text = string.Empty;
             public DialogAuthorAsset Author;
-            [SerializeReference] public IDialogSound Voice;
+            [SerializeReference, DialogSound] public IDialogSound Voice;
             public Sprite Background;
             public FontStyle FontStyle;
             public bool OverrideColor;
