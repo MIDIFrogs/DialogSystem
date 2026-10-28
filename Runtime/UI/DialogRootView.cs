@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using MIDIFrogs.DialogSystem.Unity.View;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
@@ -62,8 +62,8 @@ namespace MIDIFrogs.DialogSystem.UI
         {
             SetupAuthor(node);
 
-            voicePlayer?.Play(node.Voice);
-            var text = lineView.ShowText(node.Text, node.Voice?.Duration);
+            voicePlayer?.Play(node.Voice as IDialogVoiceover);
+            var text = lineView.ShowText(node.Text, (node.Voice as IDialogVoiceover)?.Duration);
             var background = storyboardView.ShowStoryboard(node.BackgroundImage);
             var choice = choicesView.ShowChoices(choices);
 

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
 using MIDIFrogs.DialogSystem.Unity.View;
@@ -38,7 +39,7 @@ namespace MIDIFrogs.DialogSystem.Unity.Integration
 
             flowControlSource = new CancellationTokenSource();
 
-            currentRunner = new DialogRunner(context);
+            currentRunner = new DialogRunner(context, null, null);
             currentRunner.Start(dialog);
 
             view.Show();
@@ -50,13 +51,20 @@ namespace MIDIFrogs.DialogSystem.Unity.Integration
                     && !token.IsCancellationRequested)
                 {
                     var node = currentRunner.CurrentNode;
-                    var choices = currentRunner.GetAvailableChoices();
+                    var choices = currentRunner.Choices.Where(c => c.Enabled).Select(c => c.Choice);
 
                     var selected = await PlaybackStrategy.SelectChoice(node, choices, view)
                         .AttachExternalCancellation(flowControlSource.Token)
                         .AttachExternalCancellation(token);
 
-                    currentRunner.Choose(selected);
+                    if (selected == null)
+                    {
+                        currentRunner.Advance();
+                    }
+                    else
+                    {
+                        currentRunner.Choose(selected);
+                    }
                 }
             }
             finally

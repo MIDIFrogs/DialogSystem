@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using MIDIFrogs.DialogSystem.Unity.Data;
 using MIDIFrogs.DialogSystem.Unity.Integration;
@@ -78,9 +78,7 @@ namespace MIDIFrogs.DialogSystem.Unity.Conversion
             return new DialogChoice
             {
                 Text = choice.Text,
-                Conditions = choice.Conditions.Select(c => c.Create()).ToList(),
-                Actions = choice.Actions.Select(a => a.Create()).ToList(),
-                NextNode = ConvertNode(dialogAsset, dialogAsset.GetNodeByGUID(choice.NextNodeGuid), cache)
+                Target = ConvertNode(dialogAsset, dialogAsset.GetNodeByGUID(choice.NextNodeGuid), cache)
             };
         }
     }

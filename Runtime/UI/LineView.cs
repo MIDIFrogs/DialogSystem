@@ -1,4 +1,4 @@
-﻿using MIDIFrogs.DialogSystem.Unity.View;
+using MIDIFrogs.DialogSystem.Unity.View;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
 using TMPro;
@@ -14,7 +14,10 @@ namespace MIDIFrogs.DialogSystem.UI
         {
             text.text = value.Content;
             text.fontStyle = (FontStyles)value.Style;
-            text.color = value.DefaultColor;
+            if (value.HasColor)
+            {
+                text.color = value.Color;
+            }
             return UniTask.CompletedTask;
         }
 

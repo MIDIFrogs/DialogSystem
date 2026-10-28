@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using MIDIFrogs.DialogSystem.Unity.View;
 using Cysharp.Threading.Tasks;
@@ -25,7 +25,10 @@ namespace MIDIFrogs.DialogSystem.UI
 
             currentText = value.Content;
             text.fontStyle = (FontStyles)value.Style;
-            text.color = value.DefaultColor;
+            if (value.HasColor)
+            {
+                text.color = value.Color;
+            }
             text.text = string.Empty;
 
             cts = new CancellationTokenSource();
