@@ -11,14 +11,4 @@ namespace MIDIFrogs.DialogSystem.Core
 
         void SetValue(string key, object value);
     }
-
-    public interface IDialogCondition
-    {
-        bool Evaluate(IDialogContext context);
-    }
-
-    public interface IDialogAction
-    {
-        void Execute(IDialogContext context);
-    }
 }

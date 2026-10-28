@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace MIDIFrogs.DialogSystem.Unity.Data
 {
@@ -7,8 +7,13 @@ namespace MIDIFrogs.DialogSystem.Unity.Data
     {
         public string Id;
         public string DisplayName;
-
         public Sprite Avatar;
-        public Color NameColor;
+        public Color NameColor = Color.white;
+
+        [Tooltip("Played while this author's text types out; empty uses the editor settings' default.")]
+        [SerializeReference] public IDialogSound TypingSound;
+
+        [Min(1)] public int BlipEvery = 2;
+        [Range(0f, 0.5f)] public float PitchVariance = 0.05f;
     }
 }

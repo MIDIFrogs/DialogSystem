@@ -1,9 +1,9 @@
-﻿using MIDIFrogs.DialogSystem.Core;
+using MIDIFrogs.DialogSystem.Core;
+using MIDIFrogs.DialogSystem.Unity.Data;
+using MIDIFrogs.DialogSystem.Unity.View;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using MIDIFrogs.DialogSystem.Unity.Integration;
-using MIDIFrogs.DialogSystem.Unity.View;
 
 namespace MIDIFrogs.DialogSystem.UI
 {
@@ -11,21 +11,23 @@ namespace MIDIFrogs.DialogSystem.UI
     {
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private Image avatarImage;
-        [SerializeField] private DialogAuthorProvider provider;
 
         public void ShowAuthor(DialogAuthor author)
         {
-            if (author == null || provider == null)
+            if (author == null)
             {
                 HideAuthor();
                 return;
             }
 
-            nameText.text = provider.GetName(author.Id);
-            nameText.color = provider.GetColor(author.Id);
-            avatarImage.sprite = provider.GetAvatar(author.Id);
-
-            avatarImage.gameObject.SetActive(true);
+            var asset = author.Source as DialogAuthorAsset;
+            nameText.text = author.Name;
+            if (asset != null)
+            {
+                nameText.color = asset.NameColor;
+                avatarImage.sprite = asset.Avatar;
+            }
+            avatarImage.gameObject.SetActive(asset != null && asset.Avatar != null);
         }
 
         public void HideAuthor()
