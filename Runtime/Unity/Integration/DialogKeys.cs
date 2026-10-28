@@ -5,6 +5,9 @@ namespace MIDIFrogs.DialogSystem.Unity.Integration
     {
         public const string Continue = "dialog.continue";
 
+        /// <summary>The heading of a locked answer's hint ("Требуется:").</summary>
+        public const string Required = "dialog.required";
+
         public static string Line(string dialogId, string lineId) => $"dialog.{dialogId}.{lineId}";
 
         public static string Answer(string dialogId, string lineId, string answerId) => $"dialog.{dialogId}.{lineId}.{answerId}";

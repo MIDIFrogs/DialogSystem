@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
+using MIDIFrogs.DialogSystem.Unity.Integration;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,8 +15,6 @@ namespace MIDIFrogs.DialogSystem.UI
     /// </summary>
     public class ResponseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        public const string RequiredKey = "dialog.required";
-
         [SerializeField] private TMP_Text text;
         [SerializeField] private Button button;
         [SerializeField] private GameObject hintRoot;
@@ -71,6 +70,6 @@ namespace MIDIFrogs.DialogSystem.UI
         }
 
         private static string Hint(IReadOnlyList<string> lines, IDialogTextResolver resolver) =>
-            resolver.Resolve(RequiredKey, "Требуется:") + "\n" + string.Join("\n", lines);
+            resolver.Resolve(DialogKeys.Required, "Требуется:") + "\n" + string.Join("\n", lines);
     }
 }
