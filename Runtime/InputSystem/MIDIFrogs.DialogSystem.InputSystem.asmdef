@@ -1,0 +1,25 @@
+{
+    "name": "MIDIFrogs.DialogSystem.InputSystem",
+    "rootNamespace": "MIDIFrogs.DialogSystem.InputSystem",
+    "references": [
+        "MIDIFrogs.DialogSystem.Unity",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "DIALOGSYSTEM_INPUTSYSTEM"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "1.0.0",
+            "define": "DIALOGSYSTEM_INPUTSYSTEM"
+        }
+    ],
+    "noEngineReferences": false
+}

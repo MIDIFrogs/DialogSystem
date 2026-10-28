@@ -4,6 +4,7 @@ using System.Threading;
 using MIDIFrogs.DialogSystem.Unity.View;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
+using MIDIFrogs.DialogSystem.Unity.Data;
 using UnityEngine;
 
 namespace MIDIFrogs.DialogSystem.UI
@@ -24,7 +25,7 @@ namespace MIDIFrogs.DialogSystem.UI
         private IAuthorView authorView;
         private IChoicesView choicesView;
         private IStoryboardView storyboardView;
-        private IVoicePlayer voicePlayer;
+        private IDialogSoundPlayer voicePlayer;
         private IDialogInput dialogInput;
 
         private void Awake()
@@ -39,10 +40,10 @@ namespace MIDIFrogs.DialogSystem.UI
 
         private void Update()
         {
-            if (dialogInput != null && dialogInput.WasSkipPressedThisFrame())
+            if (dialogInput != null && dialogInput.AdvancePressedThisFrame())
             {
                 lineView.Skip();
-                voicePlayer?.Stop();
+                voicePlayer?.StopVoice();
                 storyboardView?.SkipAnimation();
             }
         }
@@ -54,7 +55,7 @@ namespace MIDIFrogs.DialogSystem.UI
 
         public void Hide()
         {
-            voicePlayer?.Stop();
+            voicePlayer?.StopVoice();
             gameObject.SetActive(false);
         }
 
@@ -71,15 +72,15 @@ namespace MIDIFrogs.DialogSystem.UI
 
             SetupAuthor(node);
 
-            voicePlayer?.Play(node.Voice as IDialogVoiceover);
-            var text = lineView.ShowText(node.Text, (node.Voice as IDialogVoiceover)?.Duration);
+            voicePlayer?.PlayVoice(node.Voice as IDialogSound);
+            var text = lineView.ShowText(node.Text, (node.Voice as IDialogSound)?.Length);
             var background = storyboardView.ShowStoryboard(node.BackgroundImage);
             var choice = choicesView.ShowChoices(choices);
 
             var selected = await choice;
             lineView.Skip();
             storyboardView.SkipAnimation();
-            voicePlayer.Stop();
+            voicePlayer?.StopVoice();
 
             return selected;
         }
