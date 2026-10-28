@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using MIDIFrogs.DialogSystem.Unity.View;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
@@ -56,10 +58,17 @@ namespace MIDIFrogs.DialogSystem.UI
             gameObject.SetActive(false);
         }
 
-        public async UniTask<DialogChoice> ShowNode(
-            DialogNode node,
-            IEnumerable<DialogChoice> choices)
+        public async UniTask<DialogChoice> ShowLine(DialogNode node, IReadOnlyList<ChoiceState> states,
+            IDialogTextResolver resolver, CancellationToken token)
         {
+            var choices = states.Where(state => state.Enabled).Select(state => state.Choice).ToList();
+            if (choices.Count == 0)
+            {
+                SetupAuthor(node);
+                await lineView.ShowText(node.Text, null);
+                return null;
+            }
+
             SetupAuthor(node);
 
             voicePlayer?.Play(node.Voice as IDialogVoiceover);

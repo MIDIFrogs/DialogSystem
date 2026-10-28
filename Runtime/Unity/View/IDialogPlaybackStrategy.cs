@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
 
@@ -6,6 +7,8 @@ namespace MIDIFrogs.DialogSystem.Unity.View
 {
     public interface IDialogPlaybackStrategy
     {
-        UniTask<DialogChoice> SelectChoice(DialogNode node, IEnumerable<DialogChoice> choices, IDialogView view);
+        /// <summary>Returns the picked answer, or null to continue.</summary>
+        UniTask<DialogChoice> Next(DialogNode node, IReadOnlyList<ChoiceState> choices, IDialogView view,
+            IDialogTextResolver text, CancellationToken token);
     }
 }
