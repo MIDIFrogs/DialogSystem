@@ -54,6 +54,27 @@ namespace MIDIFrogs.DialogSystem.Tests
         }
 
         [Test]
+        public void SerializedCopyCreatesItsSources()
+        {
+            var template = new GameObject("Template");
+            template.SetActive(false);
+            template.AddComponent<DialogSoundPlayer>();
+            GameObject copy = Object.Instantiate(template);
+            copy.SetActive(true);
+            try
+            {
+                var copied = copy.GetComponent<DialogSoundPlayer>();
+                Assert.IsTrue(copied.BlipSource != null);
+                Assert.DoesNotThrow(() => copied.Blip(new AudioClipSound { Clip = clip }, 0.05f));
+            }
+            finally
+            {
+                Object.Destroy(template);
+                Object.Destroy(copy);
+            }
+        }
+
+        [Test]
         public void UnknownSoundTypeIsIgnored()
         {
             Assert.DoesNotThrow(() => player.PlayVoice(new OtherSound()));

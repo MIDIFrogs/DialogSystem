@@ -301,6 +301,15 @@ namespace MIDIFrogs.DialogSystem.Tests
             await UniTask.Yield();
         });
 
+        [UnityTest]
+        public IEnumerator HideAfterViewDestroyedDoesNotThrow() => UniTask.ToCoroutine(async () =>
+        {
+            Rig rig = Build(optional: true);
+            Object.Destroy(rig.Root.gameObject);
+            await UniTask.Yield();
+            Assert.DoesNotThrow(() => rig.Root.Hide());
+        });
+
         private sealed class TestBackground : IBackgroundImage
         {
             private readonly Sprite sprite;

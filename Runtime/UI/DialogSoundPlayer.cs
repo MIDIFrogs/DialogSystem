@@ -51,8 +51,16 @@ namespace MIDIFrogs.DialogSystem.UI
 
         private void Awake()
         {
-            voiceSource ??= CreateSource("Voice");
-            blipSource ??= CreateSource("Blips");
+            // Not ??=: an unassigned serialized field is a Unity "fake null" that ?? treats as set.
+            if (voiceSource == null)
+            {
+                voiceSource = CreateSource("Voice");
+            }
+
+            if (blipSource == null)
+            {
+                blipSource = CreateSource("Blips");
+            }
         }
 
         private void Update()

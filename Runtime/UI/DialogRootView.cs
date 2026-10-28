@@ -43,6 +43,12 @@ namespace MIDIFrogs.DialogSystem.UI
 
         public void Hide()
         {
+            // The dialog can end because this view was destroyed with its scene.
+            if (this == null)
+            {
+                return;
+            }
+
             soundPlayer?.StopVoice();
             choicesView?.Clear();
             if (continuePrompt != null)
@@ -98,15 +104,18 @@ namespace MIDIFrogs.DialogSystem.UI
             finally
             {
                 lineToken.Cancel();
-                choicesView.Clear();
-                lineView.Complete();
-                storyboardView?.SkipAnimation();
-                soundPlayer?.StopVoice();
-                if (continuePrompt != null)
-                {
-                    continuePrompt.Hide();
-                }
                 typing.Forget();
+                if (this != null)
+                {
+                    choicesView.Clear();
+                    lineView.Complete();
+                    storyboardView?.SkipAnimation();
+                    soundPlayer?.StopVoice();
+                    if (continuePrompt != null)
+                    {
+                        continuePrompt.Hide();
+                    }
+                }
             }
         }
 
