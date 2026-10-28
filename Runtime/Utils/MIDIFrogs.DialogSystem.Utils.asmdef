@@ -1,3 +1,14 @@
 {
-	"name": "MIDIFrogs.DialogSystem.Utils"
+    "name": "MIDIFrogs.DialogSystem.Utils",
+    "rootNamespace": "MIDIFrogs.DialogSystem.Utils",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

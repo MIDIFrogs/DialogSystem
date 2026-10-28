@@ -3,7 +3,7 @@ using System.Linq;
 using MIDIFrogs.DialogSystem.Unity.Data;
 using UnityEngine;
 
-namespace Assets.MIDIFrogs.DialogSystem.Runtime.Unity.Integration
+namespace MIDIFrogs.DialogSystem.Unity.Integration
 {
     [CreateAssetMenu(menuName = "Dialog System/Author Provider")]
     public class DialogAuthorProvider : ScriptableObject, IDialogAuthorProvider

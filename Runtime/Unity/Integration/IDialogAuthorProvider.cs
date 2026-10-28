@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.MIDIFrogs.DialogSystem.Runtime.Unity.Integration
+namespace MIDIFrogs.DialogSystem.Unity.Integration
 {
     public interface IDialogAuthorProvider
     {

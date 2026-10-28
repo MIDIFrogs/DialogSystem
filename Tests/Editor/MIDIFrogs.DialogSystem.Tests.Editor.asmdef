@@ -1,0 +1,30 @@
+{
+    "name": "MIDIFrogs.DialogSystem.Tests.Editor",
+    "rootNamespace": "MIDIFrogs.DialogSystem.Tests",
+    "references": [
+        "MIDIFrogs.DialogSystem.Core",
+        "MIDIFrogs.DialogSystem.Unity",
+        "MIDIFrogs.DialogSystem.UI",
+        "UniTask",
+        "Unity.TextMeshPro",
+        "UnityEngine.UI",
+        "UnityEngine.TestRunner",
+        "MIDIFrogs.DialogSystem.Editor",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

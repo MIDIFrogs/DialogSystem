@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Assets.MIDIFrogs.DialogSystem.Runtime.Unity.Integration;
+using MIDIFrogs.DialogSystem.Unity.Integration;
 using MIDIFrogs.DialogSystem.Unity.View;
 
 namespace MIDIFrogs.DialogSystem.UI
