@@ -1,11 +1,12 @@
 {
     "name": "MIDIFrogs.DialogSystem.UI",
-    "rootNamespace": "",
+    "rootNamespace": "MIDIFrogs.DialogSystem.UI",
     "references": [
-        "GUID:32526dc9dfc3d7848a08727ff780050e",
-        "GUID:a609ff403d206364baa3c692732babef",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "MIDIFrogs.DialogSystem.Core",
+        "MIDIFrogs.DialogSystem.Unity",
+        "UniTask",
+        "Unity.TextMeshPro",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

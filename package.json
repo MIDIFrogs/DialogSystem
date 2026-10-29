@@ -1,6 +1,6 @@
 {
   "name": "com.midifrogs.dialogsystem",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "displayName": "MIDIFrogs Dialog System",
   "description": "Node-based dialog system with editor and runtime UI for Unity.",
   "unity": "6000.3",
@@ -17,8 +17,8 @@
     "url": "https://github.com/MIDIFrogs"
   },
   "dependencies": {
-    "com.unity.textmeshpro": "3.0.6",
-    "com.cysharp.unitask": "2.5.0"
+    "com.unity.ugui": "2.0.0",
+    "com.unity.test-framework": "1.6.0"
   },
   "license": "MIT",
   "samples": [

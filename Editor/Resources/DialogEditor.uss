@@ -1,0 +1,251 @@
+.dialog-editor {
+    flex-grow: 1;
+}
+
+.dialog-status {
+    -unity-text-align: middle-right;
+    margin: 0 8px;
+    color: rgb(120, 200, 120);
+}
+
+.dialog-status--dirty {
+    color: rgb(230, 180, 80);
+}
+
+/* Left column */
+
+.dialog-side {
+    min-width: 140px;
+}
+
+.dialog-side__section {
+    flex-grow: 1;
+    background-color: rgb(50, 50, 50);
+}
+
+.dialog-side__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 4px 2px 8px;
+    background-color: rgb(46, 46, 46);
+    -unity-font-style: bold;
+    color: rgb(170, 170, 170);
+}
+
+.dialog-side__add {
+    width: 20px;
+    margin: 0;
+}
+
+.dialog-side__item {
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 8px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(42, 42, 42);
+}
+
+.dialog-side__item:hover {
+    background-color: rgb(60, 60, 60);
+}
+
+.dialog-side__item--selected {
+    background-color: rgb(61, 90, 128);
+}
+
+.dialog-side__item--selected:hover {
+    background-color: rgb(61, 90, 128);
+}
+
+.dialog-side__item--none {
+    color: rgb(140, 140, 140);
+}
+
+.dialog-side__dot {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    border-radius: 7px;
+    border-width: 1px;
+    border-color: rgb(30, 30, 30);
+}
+
+/* Graph */
+
+.dialog-graph GridBackground {
+    --grid-background-color: rgb(38, 38, 38);
+    --line-color: rgba(60, 60, 60, 0.5);
+    --thick-line-color: rgba(70, 70, 70, 0.6);
+    --spacing: 20;
+}
+
+.dialog-start #title {
+    background-color: rgb(46, 90, 58);
+}
+
+.dialog-node {
+    width: 260px;
+}
+
+.dialog-node__header {
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+    padding-right: 0;
+}
+
+.dialog-node__author {
+    margin: 0 2px;
+    padding: 1px 6px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-width: 0;
+    -unity-font-style: bold;
+    color: rgb(235, 235, 235);
+}
+
+.dialog-node__text {
+    margin: 6px 6px 4px 6px;
+    white-space: normal;
+    min-height: 34px;
+}
+
+.dialog-node__text > #unity-text-input {
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.dialog-answer {
+    flex-direction: row;
+    align-items: center;
+    margin: 2px 0 2px 6px;
+    padding-left: 6px;
+    background-color: rgb(48, 48, 48);
+    border-width: 1px;
+    border-color: rgb(29, 29, 29);
+    border-radius: 3px;
+}
+
+.dialog-answer__text {
+    flex-grow: 1;
+    flex-shrink: 1;
+    white-space: normal;
+}
+
+.dialog-badge {
+    font-size: 10px;
+    padding: 0 4px;
+    margin-left: 3px;
+    border-radius: 3px;
+    background-color: rgb(85, 85, 85);
+}
+
+.dialog-badge--visible {
+    background-color: rgb(91, 74, 122);
+}
+
+.dialog-badge--locked {
+    background-color: rgb(122, 91, 46);
+}
+
+.dialog-badge--actions {
+    background-color: rgb(46, 106, 91);
+}
+
+.dialog-badge--error {
+    background-color: rgb(150, 50, 50);
+}
+
+.dialog-node__add {
+    align-self: flex-start;
+    margin: 4px 6px 6px 6px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    color: rgb(150, 170, 190);
+}
+
+.dialog-warning-icon {
+    width: 16px;
+    height: 16px;
+    margin: 0 4px;
+    border-radius: 8px;
+    background-color: rgb(220, 160, 40);
+    color: rgb(30, 30, 30);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    padding: 0;
+}
+
+.dialog-node--warning #node-border {
+    border-color: rgb(200, 150, 50);
+}
+
+/* Properties */
+
+.dialog-panel {
+    min-width: 220px;
+    background-color: rgb(50, 50, 50);
+}
+
+.dialog-panel__header {
+    margin-top: 6px;
+    padding: 4px 8px;
+    background-color: rgb(46, 46, 46);
+    -unity-font-style: bold;
+    color: rgb(170, 170, 170);
+}
+
+.dialog-panel__hint {
+    margin: 2px 8px;
+    white-space: normal;
+    color: rgb(140, 140, 140);
+}
+
+.dialog-panel__text > #unity-text-input {
+    min-height: 60px;
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.dialog-panel__row {
+    flex-direction: row;
+    align-items: center;
+    margin: 2px 3px;
+}
+
+.dialog-panel__row > #label {
+    min-width: 120px;
+    padding-left: 1px;
+}
+
+.dialog-panel__style {
+    width: 24px;
+    -unity-text-align: middle-center;
+}
+
+.dialog-panel__answer {
+    margin: 4px 4px;
+    padding-bottom: 4px;
+    border-width: 1px;
+    border-color: rgb(34, 34, 34);
+    border-radius: 3px;
+}
+
+.dialog-panel__remove {
+    align-self: flex-end;
+}
+
+.dialog-panel__warning {
+    margin: 2px 8px;
+    padding-left: 6px;
+    border-left-width: 3px;
+    border-left-color: rgb(220, 160, 40);
+    white-space: normal;
+    color: rgb(230, 180, 80);
+}
+
+.dialog-error {
+    margin: 0 8px 4px 8px;
+    white-space: normal;
+    color: rgb(240, 110, 110);
+}

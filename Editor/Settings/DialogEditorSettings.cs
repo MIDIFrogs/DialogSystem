@@ -1,54 +1,87 @@
+using MIDIFrogs.DialogSystem.Unity.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace MIDIFrogs.DialogSystem.Unity.Editor
+namespace MIDIFrogs.DialogSystem.Editor.Settings
 {
-    // Editor-only settings for dialog editor paths
+    /// <summary>Project-wide dialog editor settings, stored at <c>Assets/Editor/Dialogs/DialogEditorSettings.asset</c>.</summary>
     public class DialogEditorSettings : ScriptableObject
     {
-        [Header("Default asset paths")]
-        public string DialogsPath = "Assets/Dialogs";
-        public string TriggersPath = "Assets/Dialogs/Triggers";
-        public string AuthorsPath = "Assets/Dialogs/Authors";
-
-        [Header("Cache settings")]
-        public string CachePath = "Assets/Editor/Dialogs/DialogsCache";
-
         private const string DefaultSettingsFolder = "Assets/Editor/Dialogs";
         private const string DefaultSettingsAssetPath = DefaultSettingsFolder + "/DialogEditorSettings.asset";
 
+        [Header("Folders")]
+        [SerializeField] private string dialogsPath = "Assets/Dialogs";
+        [SerializeField] private string authorsPath = "Assets/Dialogs/Authors";
+
+        [Header("Text")]
+        [Tooltip("Language the dialogs are written in. Exported strings are the source of this language.")]
+        [SerializeField] private string sourceLanguage = "ru";
+        [Tooltip("A ScriptableObject implementing IDialogStringSink that receives exported strings (e.g. a string table).")]
+        [SerializeField] private ScriptableObject stringSink;
+
+        [Header("Sound")]
+        [Tooltip("Typing sound given to new authors.")]
+        [SerializeReference, DialogSound] private IDialogSound defaultTypingSound;
+
+        public string DialogsPath => dialogsPath;
+
+        public string AuthorsPath => authorsPath;
+
+        public string SourceLanguage => sourceLanguage;
+
+        public ScriptableObject StringSink
+        {
+            get => stringSink;
+            set => stringSink = value;
+        }
+
+        /// <summary>The sink, or null when none is set or the object does not implement <see cref="IDialogStringSink"/>.</summary>
+        public IDialogStringSink Sink => stringSink as IDialogStringSink;
+
+        public IDialogSound DefaultTypingSound => defaultTypingSound;
+
         public static DialogEditorSettings GetOrCreateSettings()
         {
-            // Try to find existing settings by type
             string[] guids = AssetDatabase.FindAssets("t:" + nameof(DialogEditorSettings));
-            if (guids != null && guids.Length > 0)
+            if (guids.Length > 0)
             {
-                string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                var found = AssetDatabase.LoadAssetAtPath<DialogEditorSettings>(path);
-                if (found != null) return found;
+                var found = AssetDatabase.LoadAssetAtPath<DialogEditorSettings>(AssetDatabase.GUIDToAssetPath(guids[0]));
+                if (found != null)
+                {
+                    return found;
+                }
             }
 
-            // Ensure default folder exists
             if (!AssetDatabase.IsValidFolder("Assets/Editor"))
+            {
                 AssetDatabase.CreateFolder("Assets", "Editor");
+            }
             if (!AssetDatabase.IsValidFolder(DefaultSettingsFolder))
+            {
                 AssetDatabase.CreateFolder("Assets/Editor", "Dialogs");
+            }
 
-            // Create default settings asset
-            var settings = ScriptableObject.CreateInstance<DialogEditorSettings>();
+            var settings = CreateInstance<DialogEditorSettings>();
             AssetDatabase.CreateAsset(settings, DefaultSettingsAssetPath);
             AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-
             return settings;
         }
 
         [MenuItem("Window/Dialog Editor/Settings")]
         public static void OpenSettingsAsset()
         {
-            var settings = GetOrCreateSettings();
+            DialogEditorSettings settings = GetOrCreateSettings();
             Selection.activeObject = settings;
             EditorGUIUtility.PingObject(settings);
+        }
+
+        private void OnValidate()
+        {
+            if (stringSink != null && stringSink is not IDialogStringSink)
+            {
+                Debug.LogWarning($"{stringSink.name} does not implement {nameof(IDialogStringSink)}; dialog strings will not be exported.", this);
+            }
         }
     }
 }

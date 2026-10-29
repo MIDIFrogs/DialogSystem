@@ -1,3 +1,4 @@
+using System;
 using MIDIFrogs.DialogSystem.Core;
 using MIDIFrogs.DialogSystem.UI;
 using MIDIFrogs.DialogSystem.Unity.Conversion;
@@ -5,29 +6,36 @@ using MIDIFrogs.DialogSystem.Unity.Data;
 using MIDIFrogs.DialogSystem.Unity.Integration;
 using UnityEngine;
 
-public class SampleDialogRunner : MonoBehaviour
+namespace MIDIFrogs.DialogSystem.Samples
 {
-    [SerializeField] private DialogAsset dialog;
-    [SerializeField] private DialogRootView rootView;
-    [SerializeField] private ConditionAsset sampleConditionAsset;
-
-    private readonly DialogContext context = new();
-
-    async void Start()
+    /// <summary>
+    /// Plays the demo dialog once. The context is the dialog's own state: the caller puts game values in before
+    /// (here Gold) and reads the results after (Gold, Hired).
+    /// </summary>
+    public class SampleDialogRunner : MonoBehaviour
     {
-        var imported = DialogImporter.Import(dialog);
-        var dialogService = new DialogService(rootView, context);
+        [SerializeField] private DialogAsset dialog;
+        [SerializeField] private DialogRootView rootView;
+        [Tooltip("Set to 10 or more to unlock the paid answer.")]
+        [SerializeField] private float gold = 5f;
 
-        await dialogService.Play(imported);
-        Debug.Log("Dialog completed!");
-
-        if (sampleConditionAsset != null)
+        private async void Start()
         {
-            var condition = sampleConditionAsset.Create();
-            if (condition.Evaluate(context))
-                Debug.Log("Condition satisfied after playing dialog.");
-            else
-                Debug.Log("Condition not satisfied after playing dialog.");
+            var service = new DialogService(rootView);
+            var context = new DialogContext();
+            context.SetValue("Gold", gold);
+            try
+            {
+                await service.Play(DialogImporter.Import(dialog, service.Functions), context, destroyCancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            context.TryGetValue("Gold", out object goldLeft);
+            context.TryGetValue("Hired", out object hired);
+            Debug.Log($"Dialog finished. Gold: {goldLeft}, hired: {hired ?? false}");
         }
     }
 }

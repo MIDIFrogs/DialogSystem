@@ -1,4 +1,5 @@
-﻿using System.Threading;
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
 using MIDIFrogs.DialogSystem.Unity.View;
@@ -7,68 +8,81 @@ using UnityEngine.UI;
 
 namespace MIDIFrogs.DialogSystem.UI
 {
+    /// <summary>Cross-fades to the new background on unscaled time. A skipped fade jumps to the new image.</summary>
     public class AnimatedStoryboardView : MonoBehaviour, IStoryboardView
     {
         [SerializeField] private Image image;
-
         [SerializeField, Min(0.1f)] private float fadeDuration = 0.5f;
 
-        private CancellationTokenSource _cts;
-
-        private void OnDisable()
-        {
-            _cts?.Cancel();
-        }
+        private CancellationTokenSource cts;
 
         public void HideStoryboard()
         {
-            _cts?.Cancel();
+            cts?.Cancel();
             gameObject.SetActive(false);
         }
 
         public async UniTask ShowStoryboard(IBackgroundImage background)
         {
-            _cts?.Cancel();
-            _cts = new CancellationTokenSource();
-            var token = _cts.Token;
-
-            if (background.TryGetImage(out Sprite newSprite) && newSprite != null)
+            if (background == null || !background.TryGetImage(out Sprite newSprite) || newSprite == null)
             {
-                gameObject.SetActive(true);
+                return;
+            }
 
-                if (image.sprite == null)
-                {
-                    image.sprite = newSprite;
-                    image.color = new Color(1, 1, 1, 1);
-                    return;
-                }
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+            CancellationToken token = cts.Token;
+            gameObject.SetActive(true);
 
-                var overlay = new GameObject("Overlay", typeof(Image)).GetComponent<Image>();
-                overlay.transform.SetParent(image.transform, false);
-                overlay.sprite = newSprite;
-                overlay.color = new Color(1, 1, 1, 0);
-                overlay.raycastTarget = false;
+            if (image.sprite == null)
+            {
+                image.sprite = newSprite;
+                image.color = Color.white;
+                return;
+            }
 
+            var overlay = new GameObject("Overlay", typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+            overlay.transform.SetParent(image.transform, false);
+            var rect = (RectTransform)overlay.transform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            overlay.sprite = newSprite;
+            overlay.color = new Color(1f, 1f, 1f, 0f);
+            overlay.raycastTarget = false;
+
+            try
+            {
                 float t = 0f;
                 while (t < 1f)
                 {
-                    if (token.IsCancellationRequested) break;
-                    t += Time.unscaledDeltaTime / fadeDuration;
-                    overlay.color = new Color(1, 1, 1, t);
-                    image.color = new Color(1, 1, 1, 1 - t);
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
+                    t = Mathf.Min(1f, t + Time.unscaledDeltaTime / fadeDuration);
+                    overlay.color = new Color(1f, 1f, 1f, t);
+                    image.color = new Color(1f, 1f, 1f, 1f - t);
                 }
-
-                image.sprite = newSprite;
-                image.color = Color.white;
-                Destroy(overlay.gameObject);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                if (image != null)
+                {
+                    image.sprite = newSprite;
+                    image.color = Color.white;
+                }
+                if (overlay != null)
+                {
+                    overlay.transform.SetParent(null, false);
+                    Destroy(overlay.gameObject);
+                }
             }
         }
 
-        public void SkipAnimation()
-        {
-            _cts?.Cancel();
-            image.color = Color.white;
-        }
+        public void SkipAnimation() => cts?.Cancel();
+
+        private void OnDisable() => cts?.Cancel();
     }
 }

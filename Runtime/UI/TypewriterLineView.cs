@@ -1,86 +1,77 @@
-﻿using System;
+using System;
 using System.Threading;
-using MIDIFrogs.DialogSystem.Unity.View;
 using Cysharp.Threading.Tasks;
 using MIDIFrogs.DialogSystem.Core;
+using MIDIFrogs.DialogSystem.Unity.View;
 using TMPro;
 using UnityEngine;
 
 namespace MIDIFrogs.DialogSystem.UI
 {
+    /// <summary>Reveals the line character by character on unscaled time, keeping rich-text tags intact.</summary>
     public class TypewriterLineView : MonoBehaviour, ILineView
     {
         [SerializeField] private TMP_Text text;
+        [SerializeField, Min(1f)] private float charactersPerSecond = 40f;
 
-        [Header("Typewriter")]
-        [SerializeField] private float charactersPerSecond = 40f;
+        private int total;
+        private bool complete;
+        private int run;
 
-        private CancellationTokenSource cts;
-        private string currentText;
-        private bool isAnimating;
+        public bool IsTyping { get; private set; }
 
-        public async UniTask ShowText(StyledText value, float? duration = null)
+        public async UniTask ShowText(StyledText value, string resolvedText, float? duration, Action<int> onCharacter,
+            CancellationToken token)
         {
-            CancelCurrent();
+            int current = ++run;
+            LineStyle.Apply(text, value, resolvedText);
+            text.maxVisibleCharacters = 0;
+            text.ForceMeshUpdate();
+            total = text.textInfo.characterCount;
+            complete = false;
+            IsTyping = total > 0;
 
-            currentText = value.Content;
-            text.fontStyle = (FontStyles)value.Style;
-            text.color = value.DefaultColor;
-            text.text = string.Empty;
-
-            cts = new CancellationTokenSource();
-            var token = cts.Token;
-
-            isAnimating = true;
-
+            float speed = duration is > 0f ? total / duration.Value : charactersPerSecond;
+            float shown = 0f;
+            int visible = 0;
             try
             {
-                await TypeText(value.Content, duration, token);
+                while (visible < total && !complete)
+                {
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+                    if (current != run)
+                    {
+                        return;
+                    }
+
+                    shown += Time.unscaledDeltaTime * speed;
+                    int next = Mathf.Min(total, Mathf.FloorToInt(shown));
+                    if (next == visible)
+                    {
+                        continue;
+                    }
+
+                    visible = next;
+                    text.maxVisibleCharacters = visible;
+                    onCharacter?.Invoke(visible);
+                }
             }
-            catch (OperationCanceledException)
+            finally
             {
-            }
-
-            isAnimating = false;
-        }
-
-        public void Skip()
-        {
-            if (!isAnimating)
-                return;
-
-            CancelCurrent();
-            text.text = currentText;
-            isAnimating = false;
-        }
-
-        private async UniTask TypeText(string value, float? requestedDuration, CancellationToken token)
-        {
-            float typeSpeed = requestedDuration == null || requestedDuration == 0 ? charactersPerSecond : value.Length / requestedDuration.Value;
-            
-            float delay = 1f / typeSpeed;
-
-            for (int i = 0; i < value.Length; i++)
-            {
-                token.ThrowIfCancellationRequested();
-
-                text.text += value[i];
-
-                await UniTask.Delay(
-                    Mathf.CeilToInt(delay * 1000),
-                    ignoreTimeScale: true,
-                    cancellationToken: token);
+                // A newer ShowText owns the text now.
+                if (current == run && text != null)
+                {
+                    text.maxVisibleCharacters = total;
+                    IsTyping = false;
+                }
             }
         }
 
-        private void CancelCurrent()
+        public void Complete()
         {
-            if (cts != null)
-            {
-                cts.Cancel();
-                cts.Dispose();
-                cts = null;
-            }
+            complete = true;
+            text.maxVisibleCharacters = total;
+            IsTyping = false;
         }
     }
 }

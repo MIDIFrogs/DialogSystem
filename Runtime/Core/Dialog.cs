@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MIDIFrogs.DialogSystem.Core
 {
     public class Dialog
     {
+        public string Id;
         public DialogNode StartNode;
     }
 }

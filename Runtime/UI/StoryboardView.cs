@@ -17,7 +17,7 @@ namespace MIDIFrogs.DialogSystem.UI
 
         public UniTask ShowStoryboard(IBackgroundImage background)
         {
-            if (background.TryGetImage(out Sprite sprite))
+            if (background != null && background.TryGetImage(out Sprite sprite))
             {
                 gameObject.SetActive(true);
                 image.sprite = sprite;

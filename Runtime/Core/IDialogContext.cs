@@ -1,25 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace MIDIFrogs.DialogSystem.Core
 {
+    /// <summary>Variables of one played dialog: bool, number (double) or string values by name.</summary>
     public interface IDialogContext
     {
-        IReadOnlyCollection<KeyValuePair<string, object>> Records { get; }
+        IEnumerable<KeyValuePair<string, object>> Records { get; }
 
-        T GetValue<T>(string key);
+        bool TryGetValue(string key, out object value);
 
-        void SetValue<T>(string key, T value);
-
-        bool TryGetValue<T>(string key, out T value);
-    }
-
-    public interface IDialogCondition
-    {
-        bool Evaluate(IDialogContext context);
-    }
-
-    public interface IDialogAction
-    {
-        void Execute(IDialogContext context);
+        void SetValue(string key, object value);
     }
 }

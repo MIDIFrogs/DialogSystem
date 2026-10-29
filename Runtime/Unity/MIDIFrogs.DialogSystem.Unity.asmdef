@@ -1,9 +1,9 @@
 {
     "name": "MIDIFrogs.DialogSystem.Unity",
-    "rootNamespace": "",
+    "rootNamespace": "MIDIFrogs.DialogSystem.Unity",
     "references": [
-        "GUID:32526dc9dfc3d7848a08727ff780050e",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "MIDIFrogs.DialogSystem.Core",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
