@@ -72,8 +72,9 @@ public class TalkToGuard : MonoBehaviour
 - A line has an author, text (rich text allowed), font style, an optional text colour (off = the view's colour),
   a voice, a background sprite, a **Далее** link and answers (**+ Ответ**).
 - A line with no enabled answers shows the continue prompt and follows Next. While the text types, the first
-  press shows it all, the second continues. A line with enabled answers waits for one; clicking elsewhere does
-  not skip it.
+  press shows it all, the second continues. On a line with enabled answers the answers appear when the text is
+  out (a press or click finishes the typing); then the line waits for an answer, and clicking elsewhere does not
+  skip it.
 - If a line's answers are all hidden or locked and it has no Next, the dialog ends there (the editor warns).
 - Each answer has text, **👁 visible-if**, **🔒 enabled-if**, an optional **hint**, **⚙ actions** and a target
   line. The node shows 👁/🔒/⚙ badges with the number of clauses or statements.
@@ -92,7 +93,8 @@ HasItem("Sword") && (Reputation > 3 || MetElder)
   allowed: `quest.stage`) and function calls.
 - An empty condition is true.
 - An unset variable reads as the default of the type it is compared with: `false`, `0` or `""`. Comparing
-  different types (`Gold > "ten"`) is false.
+  different types (`Gold > "ten"`) is false and logs one warning. A game function that throws logs one warning
+  and counts as unset.
 
 Actions are statements separated by `;`:
 
@@ -169,8 +171,8 @@ type and an `IDialogSoundPlayer` that plays it; sound kinds a player does not kn
 ## Input
 
 `DialogRootView` polls an `IDialogInput` for "continue". `InputSystemDialogInput` (compiled when the Input System
-is installed) uses an action reference such as `UI/Submit`. The continue prompt also catches clicks anywhere on
-screen. Answers are uGUI buttons: the first enabled answer is selected, so arrows, Submit and the gamepad work.
+is installed) uses an action reference such as `UI/Submit`. Clicks come from the continue prompt, which catches
+them anywhere on screen, so no click action is needed. Answers are uGUI buttons: the first enabled answer is selected, so arrows, Submit and the gamepad work.
 Locked answers can be selected to read their hint, but pressing them does nothing.
 
 ## Views

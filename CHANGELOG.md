@@ -39,6 +39,11 @@ All notable changes to this project will be documented in this file.
 - Autoplay cancels the view's wait for the previous line (I4).
 - A view destroyed with its scene during a dialog no longer throws when the dialog ends.
 - `DialogSoundPlayer` creates its audio sources in prefabs, where unassigned fields are Unity "fake nulls".
+- Submit that continues a line no longer picks the first answer of the next line in the same frame; answers appear after the text has typed.
+- Starting a new line stops the previous typewriter run (no overlapping typing after an answer is clicked mid-line).
+- Autoplay lets the view finish cleaning up a line before the next one starts.
+- A game function that throws counts as unset with one warning; comparing values of different kinds logs one warning; a failing view no longer leaves the service "playing".
+- The dialog editor opens only dialog assets on double-click, not whatever is selected.
 
 ---
 

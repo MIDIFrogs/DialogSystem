@@ -164,13 +164,20 @@ namespace MIDIFrogs.DialogSystem.Tests
             }
         }
 
+        /// <summary>Waits until the answers are shown and one frame more, so clicks are accepted.</summary>
+        private static async UniTask WaitForAnswers(Rig rig)
+        {
+            await WaitUntil(() => rig.Choices.GetComponentsInChildren<ResponseButton>().Length > 0);
+            await UniTask.Yield();
+        }
+
         [UnityTest]
         public IEnumerator RootViewWorksWithoutOptionalViews() => UniTask.ToCoroutine(async () =>
         {
             Rig rig = Build(optional: false);
             var states = new[] { State("Yes", true) };
             UniTask<DialogChoice> shown = rig.Root.ShowLine(Line("Hi"), states, SourceTextResolver.Instance, CancellationToken.None);
-            await UniTask.Yield();
+            await WaitForAnswers(rig);
             rig.Choices.GetComponentInChildren<Button>().onClick.Invoke();
             DialogChoice picked = await shown;
             Assert.AreSame(states[0].Choice, picked);
@@ -214,7 +221,7 @@ namespace MIDIFrogs.DialogSystem.Tests
             Rig rig = Build(optional: true);
             var states = new[] { State("Pay", false, "Gold ≥ 10"), State("Leave", true) };
             UniTask<DialogChoice> shown = rig.Root.ShowLine(Line("Hi"), states, SourceTextResolver.Instance, CancellationToken.None);
-            await UniTask.Yield();
+            await WaitForAnswers(rig);
             ResponseButton locked = rig.Choices.GetComponentsInChildren<ResponseButton>()[0];
             GameObject hint = locked.transform.Find("Hint").gameObject;
             Assert.IsFalse(hint.activeSelf);
@@ -236,7 +243,7 @@ namespace MIDIFrogs.DialogSystem.Tests
             Rig rig = Build(optional: true);
             var states = new[] { State("Pay", false, "x"), State("Leave", true) };
             rig.Root.ShowLine(Line("Hi"), states, SourceTextResolver.Instance, CancellationToken.None).Forget();
-            await UniTask.Yield();
+            await WaitForAnswers(rig);
             Assert.AreSame(rig.Choices.GetComponentsInChildren<Button>()[1].gameObject, EventSystem.current.currentSelectedGameObject);
         });
 
@@ -299,6 +306,62 @@ namespace MIDIFrogs.DialogSystem.Tests
             rig.Author.ShowAuthor(null, SourceTextResolver.Instance);
             Assert.AreEqual(string.Empty, rig.Author.transform.Find("Name").GetComponent<TMP_Text>().text);
             await UniTask.Yield();
+        });
+
+        [UnityTest]
+        public IEnumerator ClickInTheFrameAnswersAppearIsIgnored() => UniTask.ToCoroutine(async () =>
+        {
+            Rig rig = Build(optional: true);
+            var states = new[] { State("Yes", true) };
+            UniTask<DialogChoice> shown = rig.Choices.ShowChoices(states, SourceTextResolver.Instance, CancellationToken.None);
+            // Same frame: what the EventSystem does with the Submit press that continued the previous line.
+            rig.Choices.GetComponentInChildren<Button>().onClick.Invoke();
+            await UniTask.Yield();
+            Assert.AreEqual(UniTaskStatus.Pending, shown.Status);
+            rig.Choices.GetComponentInChildren<Button>().onClick.Invoke();
+            Assert.AreSame(states[0].Choice, await shown);
+        });
+
+        [UnityTest]
+        public IEnumerator AnswersAppearAfterTypingAndPressCompletesIt() => UniTask.ToCoroutine(async () =>
+        {
+            Rig rig = Build(optional: true);
+            Set(rig.Line, "charactersPerSecond", 1f);
+            var states = new[] { State("Yes", true) };
+            UniTask<DialogChoice> shown = rig.Root.ShowLine(Line("A long line"), states, SourceTextResolver.Instance, CancellationToken.None);
+            await UniTask.Yield();
+            Assert.IsTrue(rig.Line.IsTyping);
+            Assert.AreEqual(0, rig.Choices.GetComponentsInChildren<ResponseButton>().Length);
+
+            rig.Input.Press = true;
+            await WaitUntil(() => rig.Choices.GetComponentsInChildren<ResponseButton>().Length == 1);
+            Assert.IsFalse(rig.Line.IsTyping);
+            await UniTask.Yield();
+            rig.Choices.GetComponentInChildren<Button>().onClick.Invoke();
+            Assert.AreSame(states[0].Choice, await shown);
+        });
+
+        [UnityTest]
+        public IEnumerator NewTextStopsThePreviousTyping() => UniTask.ToCoroutine(async () =>
+        {
+            Rig rig = Build(optional: false);
+            Set(rig.Line, "charactersPerSecond", 1000f);
+            bool restarted = false;
+            var first = new StyledText { Content = new string('a', 200) };
+            var second = new StyledText { Content = "xy" };
+            rig.Line.ShowText(first, first.Content, null, shownCount =>
+            {
+                if (shownCount >= 3 && !restarted)
+                {
+                    restarted = true;
+                    rig.Line.ShowText(second, second.Content, 20f, null, CancellationToken.None).Forget();
+                }
+            }, CancellationToken.None).Forget();
+            await WaitUntil(() => restarted);
+            await UniTask.Yield();
+            await UniTask.Yield();
+            Assert.IsTrue(rig.Line.IsTyping, "the old run must not finish the new text");
+            Assert.Less(rig.Line.GetComponent<TMP_Text>().maxVisibleCharacters, 2);
         });
 
         [UnityTest]

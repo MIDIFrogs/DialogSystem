@@ -76,10 +76,10 @@ namespace MIDIFrogs.DialogSystem.UI
             soundPlayer?.PlayVoice(voice);
             storyboardView?.ShowStoryboard(node.BackgroundImage).Forget();
             float? duration = voice != null && voice.Length > 0f ? voice.Length : null;
-            UniTask typing = lineView.ShowText(node.Text, text.Resolve(node.Text.Key, node.Text.Content), duration,
-                voice == null ? Blipper(node.Author) : null, token);
-
             using var lineToken = CancellationTokenSource.CreateLinkedTokenSource(token);
+            UniTask typing = lineView.ShowText(node.Text, text.Resolve(node.Text.Key, node.Text.Content), duration,
+                voice == null ? Blipper(node.Author) : null, lineToken.Token);
+
             try
             {
                 bool anyEnabled = false;
@@ -90,6 +90,8 @@ namespace MIDIFrogs.DialogSystem.UI
 
                 if (anyEnabled)
                 {
+                    // Answers appear when the text is out; a press while it types finishes it.
+                    await WaitWhileTyping(text, token);
                     return await choicesView.ShowChoices(choices, text, lineToken.Token);
                 }
 
@@ -119,6 +121,38 @@ namespace MIDIFrogs.DialogSystem.UI
             }
         }
 
+        private async UniTask WaitWhileTyping(IDialogTextResolver text, CancellationToken token)
+        {
+            if (!lineView.IsTyping)
+            {
+                return;
+            }
+
+            if (continuePrompt != null)
+            {
+                continuePrompt.Show(text, withLabel: false);
+            }
+
+            try
+            {
+                while (lineView.IsTyping)
+                {
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+                    if (Pressed())
+                    {
+                        lineView.Complete();
+                    }
+                }
+            }
+            finally
+            {
+                if (this != null && continuePrompt != null)
+                {
+                    continuePrompt.Hide();
+                }
+            }
+        }
+
         private async UniTask WaitForContinue(IDialogTextResolver text, CancellationToken token)
         {
             if (continuePrompt != null)
@@ -129,8 +163,7 @@ namespace MIDIFrogs.DialogSystem.UI
             while (true)
             {
                 await UniTask.Yield(PlayerLoopTiming.Update, token);
-                bool pressed = (input?.AdvancePressedThisFrame() ?? false) | (continuePrompt != null && continuePrompt.ConsumeClick());
-                if (!pressed)
+                if (!Pressed())
                 {
                     continue;
                 }
@@ -143,6 +176,9 @@ namespace MIDIFrogs.DialogSystem.UI
                 return;
             }
         }
+
+        private bool Pressed() =>
+            (input?.AdvancePressedThisFrame() ?? false) | (continuePrompt != null && continuePrompt.ConsumeClick());
 
         private System.Action<int> Blipper(DialogAuthor author)
         {

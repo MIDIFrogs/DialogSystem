@@ -23,8 +23,10 @@ namespace MIDIFrogs.DialogSystem.Unity.View
             IDialogTextResolver text, CancellationToken token)
         {
             using var line = CancellationTokenSource.CreateLinkedTokenSource(token);
-            UniTask<(bool cancelled, DialogChoice picked)> shown = view.ShowLine(node, choices, text, line.Token)
-                .SuppressCancellationThrow();
+            // A completion source can be awaited twice: by WhenAny and, when the timer wins, after cancelling.
+            var viewDone = new UniTaskCompletionSource<(bool cancelled, DialogChoice picked)>();
+            RunView(view.ShowLine(node, choices, text, line.Token), viewDone).Forget();
+            UniTask<(bool cancelled, DialogChoice picked)> shown = viewDone.Task;
             UniTask timer = UniTask.Delay(TimeSpan.FromSeconds(seconds), DelayType.UnscaledDeltaTime, cancellationToken: line.Token)
                 .SuppressCancellationThrow();
 
@@ -36,8 +38,23 @@ namespace MIDIFrogs.DialogSystem.Unity.View
                 return result.picked;
             }
 
+            // Let the view clean up this line before the next one starts.
             line.Cancel();
+            await shown;
             return SkipStrategy.FirstEnabled(choices);
+        }
+
+        private static async UniTaskVoid RunView(UniTask<DialogChoice> shown,
+            UniTaskCompletionSource<(bool cancelled, DialogChoice picked)> done)
+        {
+            try
+            {
+                done.TrySetResult(await shown.SuppressCancellationThrow());
+            }
+            catch (Exception exception)
+            {
+                done.TrySetException(exception);
+            }
         }
     }
 }

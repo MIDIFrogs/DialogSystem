@@ -23,6 +23,7 @@ namespace MIDIFrogs.DialogSystem.UI
 
         private UniTaskCompletionSource<DialogChoice> picked;
         private bool locked;
+        private int boundFrame;
 
         public Button Button => button;
 
@@ -42,10 +43,12 @@ namespace MIDIFrogs.DialogSystem.UI
             ShowHint(false);
 
             picked = new UniTaskCompletionSource<DialogChoice>();
+            boundFrame = Time.frameCount;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() =>
             {
-                if (!locked)
+                // A Submit pressed in the frame the answers appear belongs to the previous line.
+                if (!locked && Time.frameCount != boundFrame)
                 {
                     picked.TrySetResult(state.Choice);
                 }

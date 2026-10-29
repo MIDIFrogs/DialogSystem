@@ -1,3 +1,7 @@
+using UnityEngine.TestTools;
+using UnityEngine;
+using System.Text.RegularExpressions;
+using System;
 using System.Collections.Generic;
 using MIDIFrogs.DialogSystem.Core;
 using MIDIFrogs.DialogSystem.Core.Expressions;
@@ -52,8 +56,42 @@ namespace MIDIFrogs.DialogSystem.Tests
         public void TypeMismatchComparesFalse()
         {
             context.SetValue("Gold", 5);
+            LogAssert.Expect(LogType.Warning, new Regex("compares Number with String"));
+            LogAssert.Expect(LogType.Warning, new Regex("compares Number with String"));
             Assert.IsFalse(Eval("Gold > \"ten\""));
             Assert.IsFalse(Eval("Gold == \"5\""));
+        }
+
+        [Test]
+        public void TypeMismatchWarnsOncePerComparison()
+        {
+            context.SetValue("Gold", 5);
+            DialogExpression expression = DialogExpression.Parse("Gold > \"ten\"", functions, out _);
+            LogAssert.Expect(LogType.Warning, new Regex("compares Number with String"));
+            Assert.IsFalse(expression.Evaluate(context));
+            Assert.IsFalse(expression.Evaluate(context));
+            LogAssert.NoUnexpectedReceived();
+        }
+
+        [Test]
+        public void ThrowingFunctionCountsAsFalseWithOneWarning()
+        {
+            functions.Register("Boom", 0, _ => throw new InvalidOperationException("boom"));
+            DialogExpression expression = DialogExpression.Parse("Boom()", functions, out _);
+            LogAssert.Expect(LogType.Warning, new Regex("Boom"));
+            Assert.IsFalse(expression.Evaluate(context));
+            Assert.IsFalse(expression.Evaluate(context));
+            LogAssert.NoUnexpectedReceived();
+        }
+
+        [Test]
+        public void ThrowingActionIsSkipped()
+        {
+            functions.Register("Boom", 0, _ => throw new InvalidOperationException("boom"));
+            DialogScript script = DialogScript.Parse("Boom(); Done = true", functions, out _);
+            LogAssert.Expect(LogType.Warning, new Regex("Boom"));
+            script.Execute(context);
+            Assert.IsTrue(context.TryGetValue("Done", out object done) && (bool)done);
         }
 
         [Test]

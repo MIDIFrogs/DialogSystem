@@ -39,11 +39,11 @@ namespace MIDIFrogs.DialogSystem.Unity.Integration
             IsPlaying = true;
             stopSource = new CancellationTokenSource();
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(token, stopSource.Token);
-            var runner = new DialogRunner(context, Functions, Text);
-            runner.Start(dialog);
-            view.Show();
             try
             {
+                var runner = new DialogRunner(context, Functions, Text);
+                runner.Start(dialog);
+                view.Show();
                 while (!runner.IsFinished)
                 {
                     DialogChoice picked;

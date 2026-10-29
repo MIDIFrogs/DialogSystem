@@ -1,10 +1,11 @@
+using UnityEngine;
 using System;
 
 namespace MIDIFrogs.DialogSystem.Core.Expressions
 {
     /// <summary>
     /// A comparison. An unset side reads as the other side's default (false, 0 or ""); values of different kinds
-    /// compare false; strings order ordinally; bools only support == and !=.
+    /// compare false (with one warning per comparison); strings order ordinally; bools only support == and !=.
     /// </summary>
     public sealed class CompareNode : ExpressionNode
     {
@@ -22,8 +23,19 @@ namespace MIDIFrogs.DialogSystem.Core.Expressions
 
         public ExpressionNode Right { get; }
 
-        public override DialogValue Evaluate(IDialogContext context, DialogFunctions functions) =>
-            DialogValue.FromBool(Compare(Op, Left.Evaluate(context, functions), Right.Evaluate(context, functions)));
+        private bool warned;
+
+        public override DialogValue Evaluate(IDialogContext context, DialogFunctions functions)
+        {
+            DialogValue left = Left.Evaluate(context, functions);
+            DialogValue right = Right.Evaluate(context, functions);
+            if (!warned && left.Kind != DialogValueKind.Unset && right.Kind != DialogValueKind.Unset && left.Kind != right.Kind)
+            {
+                warned = true;
+                Debug.LogWarning($"[DialogSystem] '{Source}' compares {left.Kind} with {right.Kind}; it is false.");
+            }
+            return DialogValue.FromBool(Compare(Op, left, right));
+        }
 
         public static bool Compare(CompareOp op, DialogValue left, DialogValue right)
         {

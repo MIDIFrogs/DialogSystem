@@ -44,6 +44,21 @@ namespace MIDIFrogs.DialogSystem.Tests
             }
         }
 
+        [Test]
+        public void OpeningAnotherAssetIsNotTakenOver()
+        {
+            Selection.activeObject = dialog;
+            var other = ScriptableObject.CreateInstance<DialogAuthorAsset>();
+            try
+            {
+                Assert.IsFalse(DialogEditorWindow.OnOpenAsset(other.GetInstanceID(), 0));
+            }
+            finally
+            {
+                Object.DestroyImmediate(other);
+            }
+        }
+
         [UnityTest]
         public IEnumerator DropOnEmptySpaceCreatesLinkedLine()
         {

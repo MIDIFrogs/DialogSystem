@@ -16,12 +16,14 @@ namespace MIDIFrogs.DialogSystem.UI
 
         private int total;
         private bool complete;
+        private int run;
 
         public bool IsTyping { get; private set; }
 
         public async UniTask ShowText(StyledText value, string resolvedText, float? duration, Action<int> onCharacter,
             CancellationToken token)
         {
+            int current = ++run;
             LineStyle.Apply(text, value, resolvedText);
             text.maxVisibleCharacters = 0;
             text.ForceMeshUpdate();
@@ -37,6 +39,11 @@ namespace MIDIFrogs.DialogSystem.UI
                 while (visible < total && !complete)
                 {
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
+                    if (current != run)
+                    {
+                        return;
+                    }
+
                     shown += Time.unscaledDeltaTime * speed;
                     int next = Mathf.Min(total, Mathf.FloorToInt(shown));
                     if (next == visible)
@@ -51,8 +58,12 @@ namespace MIDIFrogs.DialogSystem.UI
             }
             finally
             {
-                text.maxVisibleCharacters = total;
-                IsTyping = false;
+                // A newer ShowText owns the text now.
+                if (current == run && text != null)
+                {
+                    text.maxVisibleCharacters = total;
+                    IsTyping = false;
+                }
             }
         }
 

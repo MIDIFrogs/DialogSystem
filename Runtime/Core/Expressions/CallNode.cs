@@ -1,3 +1,5 @@
+using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 namespace MIDIFrogs.DialogSystem.Core.Expressions
@@ -15,6 +17,8 @@ namespace MIDIFrogs.DialogSystem.Core.Expressions
 
         public IReadOnlyList<ExpressionNode> Arguments { get; }
 
+        private bool warned;
+
         public override DialogValue Evaluate(IDialogContext context, DialogFunctions functions)
         {
             var values = new DialogValue[Arguments.Count];
@@ -22,7 +26,19 @@ namespace MIDIFrogs.DialogSystem.Core.Expressions
             {
                 values[i] = Arguments[i].Evaluate(context, functions);
             }
-            return Function.Body(values);
+            try
+            {
+                return Function.Body(values);
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException)
+            {
+                if (!warned)
+                {
+                    warned = true;
+                    Debug.LogWarning($"[DialogSystem] '{Source}' threw {exception.GetType().Name} ({exception.Message}); it counts as unset.");
+                }
+                return DialogValue.Unset;
+            }
         }
     }
 }

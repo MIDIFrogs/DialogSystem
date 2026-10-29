@@ -65,7 +65,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)
         {
-            if (Selection.activeObject is not DialogAsset asset)
+            if (EditorUtility.EntityIdToObject(instanceId) is not DialogAsset asset)
             {
                 return false;
             }

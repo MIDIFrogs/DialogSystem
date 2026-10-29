@@ -23,9 +23,16 @@ namespace MIDIFrogs.DialogSystem.Tests
             public bool WaitForever;
             public CancellationToken LastToken;
             public int Hides;
+            public int Cleanups;
+            public bool ThrowOnShow;
+            public readonly List<int> CleanupsWhenShown = new();
 
             public void Show()
             {
+                if (ThrowOnShow)
+                {
+                    throw new InvalidOperationException("broken view");
+                }
             }
 
             public void Hide() => Hides++;
@@ -34,10 +41,22 @@ namespace MIDIFrogs.DialogSystem.Tests
                 IDialogTextResolver text, CancellationToken token)
             {
                 Shown.Add(node.Text.Content);
+                CleanupsWhenShown.Add(Cleanups);
                 LastToken = token;
                 if (WaitForever)
                 {
-                    await UniTask.Never(token);
+                    // Like a real view: notices cancellation on its next frame, then cleans up.
+                    try
+                    {
+                        while (true)
+                        {
+                            await UniTask.Yield(PlayerLoopTiming.Update, token);
+                        }
+                    }
+                    finally
+                    {
+                        Cleanups++;
+                    }
                 }
                 return choices.FirstOrDefault(c => c.Choice.Text == Pick)?.Choice;
             }
@@ -125,6 +144,27 @@ namespace MIDIFrogs.DialogSystem.Tests
                 .Timeout(TimeSpan.FromSeconds(2), DelayType.Realtime);
             Assert.IsTrue(view.LastToken.IsCancellationRequested);
         });
+
+        [UnityTest]
+        public IEnumerator AutoplayLetsTheViewCleanUpBeforeTheNextLine() => UniTask.ToCoroutine(async () =>
+        {
+            view.WaitForever = true;
+            service.PlaybackStrategy = new AutoplayStrategy(0.05f);
+            DialogNode a = Line("a"), b = Line("b");
+            a.Next = b;
+            await service.Play(new Dialog { StartNode = a }, new DialogContext())
+                .Timeout(TimeSpan.FromSeconds(3), DelayType.Realtime);
+            CollectionAssert.AreEqual(new[] { 0, 1 }, view.CleanupsWhenShown);
+        });
+
+        [Test]
+        public void BrokenViewDoesNotLeaveTheServicePlaying()
+        {
+            view.ThrowOnShow = true;
+            Assert.Throws<InvalidOperationException>(() =>
+                service.Play(new Dialog { StartNode = Line("a") }, new DialogContext()).GetAwaiter().GetResult());
+            Assert.IsFalse(service.IsPlaying);
+        }
 
         [Test]
         [Timeout(2000)]

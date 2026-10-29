@@ -17,12 +17,14 @@ namespace MIDIFrogs.DialogSystem.UI
 
         private bool clicked;
 
-        public void Show(IDialogTextResolver text)
+        /// <summary>Shows the prompt; without the label it only catches clicks (to finish typing).</summary>
+        public void Show(IDialogTextResolver text, bool withLabel = true)
         {
             clicked = false;
             if (label != null)
             {
                 label.text = (text ?? SourceTextResolver.Instance).Resolve(DialogKeys.Continue, fallbackText);
+                label.enabled = withLabel;
             }
             gameObject.SetActive(true);
         }
