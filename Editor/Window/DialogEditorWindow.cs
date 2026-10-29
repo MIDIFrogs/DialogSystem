@@ -314,7 +314,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
                 return;
             }
 
-            status.text = saved ? "● Сохранено" : "● Изменено";
+            status.text = saved ? "Сохранено" : "Изменено";
             status.EnableInClassList("dialog-status--dirty", !saved);
         }
 

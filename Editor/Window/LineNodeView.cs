@@ -32,7 +32,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
             Input = DialogPort.Create(Direction.Input, Port.Capacity.Multi, listener, PortRef.ForInput(line.Id));
             authorButton = new Button(ShowAuthorMenu);
             authorButton.AddToClassList("dialog-node__author");
-            warningIcon = new Label("⚠");
+            warningIcon = new Label("!");
             warningIcon.AddToClassList("dialog-warning-icon");
             var spacer = new VisualElement();
             spacer.style.flexGrow = 1;
@@ -83,7 +83,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
 
         public void Refresh(DialogAsset.Line line)
         {
-            authorButton.text = DialogEditorWindow.AuthorName(line.Author) + " ▾";
+            authorButton.text = DialogEditorWindow.AuthorName(line.Author);
             Color color = line.Author != null ? line.Author.NameColor : new Color(0.45f, 0.45f, 0.45f);
             titleContainer.style.backgroundColor = Color.Lerp(color, Color.black, 0.55f);
             if (text.value != line.Text)
@@ -166,9 +166,9 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
             public void Refresh(DialogAsset.Answer answer, DialogEditorWindow editor)
             {
                 text.text = string.IsNullOrEmpty(answer.Text) ? "(пустой ответ)" : answer.Text;
-                SetBadge(visible, "👁", ExpressionBadges.Clauses(answer.VisibleIf, editor.Functions), "Видимость: " + answer.VisibleIf);
-                SetBadge(locked, "🔒", ExpressionBadges.Clauses(answer.EnabledIf, editor.Functions), "Доступность: " + answer.EnabledIf);
-                SetBadge(actions, "⚙", ExpressionBadges.Actions(answer.Actions, editor.Functions), "Действия: " + answer.Actions);
+                SetBadge(visible, "вид", ExpressionBadges.Clauses(answer.VisibleIf, editor.Functions), "Видимость: " + answer.VisibleIf);
+                SetBadge(locked, "доступ", ExpressionBadges.Clauses(answer.EnabledIf, editor.Functions), "Доступность: " + answer.EnabledIf);
+                SetBadge(actions, "действ.", ExpressionBadges.Actions(answer.Actions, editor.Functions), "Действия: " + answer.Actions);
             }
 
             private static Label Badge(string kind)

@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace MIDIFrogs.DialogSystem.Editor.Inspectors
 {
-    /// <summary>Type picker ("Нет", "Audio Clip Sound", …) plus the fields of the chosen sound.</summary>
+    /// <summary>Type picker ("Нет", "Audio Clip Sound", ...) plus the fields of the chosen sound.</summary>
     [CustomPropertyDrawer(typeof(DialogSoundAttribute))]
     public sealed class DialogSoundDrawer : PropertyDrawer
     {

@@ -165,8 +165,15 @@
 }
 
 .dialog-warning-icon {
-    color: rgb(240, 190, 70);
+    width: 16px;
+    height: 16px;
     margin: 0 4px;
+    border-radius: 8px;
+    background-color: rgb(220, 160, 40);
+    color: rgb(30, 30, 30);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    padding: 0;
 }
 
 .dialog-node--warning #node-border {
@@ -230,6 +237,9 @@
 
 .dialog-panel__warning {
     margin: 2px 8px;
+    padding-left: 6px;
+    border-left-width: 3px;
+    border-left-color: rgb(220, 160, 40);
     white-space: normal;
     color: rgb(230, 180, 80);
 }

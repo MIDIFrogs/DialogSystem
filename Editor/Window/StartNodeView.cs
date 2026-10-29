@@ -16,7 +16,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
             AddToClassList("dialog-start");
             Output = DialogPort.Create(Direction.Output, Port.Capacity.Single, listener, PortRef.ForStart());
             outputContainer.Add(Output);
-            warningIcon = new Label("⚠");
+            warningIcon = new Label("!");
             warningIcon.AddToClassList("dialog-warning-icon");
             titleContainer.Add(warningIcon);
             SetWarnings(new List<string>());

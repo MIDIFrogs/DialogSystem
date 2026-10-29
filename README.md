@@ -76,8 +76,8 @@ public class TalkToGuard : MonoBehaviour
   out (a press or click finishes the typing); then the line waits for an answer, and clicking elsewhere does not
   skip it.
 - If a line's answers are all hidden or locked and it has no Next, the dialog ends there (the editor warns).
-- Each answer has text, **👁 visible-if**, **🔒 enabled-if**, an optional **hint**, **⚙ actions** and a target
-  line. The node shows 👁/🔒/⚙ badges with the number of clauses or statements.
+- Each answer has text, **visible-if**, **enabled-if**, an optional **hint**, **actions** and a target line.
+  The node shows *вид* / *доступ* / *действ.* badges with the number of clauses or statements.
 
 ## Expressions
 
@@ -203,7 +203,7 @@ You can also implement `IDialogView` from scratch.
   conditions, hint and actions), or the dialog's Id and its problems when nothing is selected.
 - Changes are saved about half a second after the last edit. Undo/Redo work, one step per typing pause.
 - Problems (Start not linked, unreachable lines, all answers conditional without Next, links to deleted lines,
-  expression errors, duplicate group titles) show as ⚠ on nodes and never block saving.
+  expression errors, duplicate group titles) show as an orange "!" on nodes and never block saving.
 - Layout (positions, groups) is stored in the dialog asset itself.
 
 ## Tests

@@ -111,7 +111,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
             warningsBox.Add(Header("Проблемы"));
             foreach (DialogWarning warning in shown)
             {
-                var label = new Label("⚠ " + warning.Message);
+                var label = new Label(warning.Message);
                 label.AddToClassList("dialog-panel__warning");
                 if (lineId == null && warning.LineId != null)
                 {
@@ -129,7 +129,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
             var id = new TextField("Id") { value = dialog.Id };
             id.RegisterValueChangedCallback(evt => editor.Change("Id диалога", d => d.Id = evt.newValue, ChangeKind.Typing, "dialog.id"));
             scroll.Add(id);
-            scroll.Add(Hint("Id входит в ключи локализации (dialog.<id>.…). Он не меняется при переименовании файла."));
+            scroll.Add(Hint("Id входит в ключи локализации (dialog.<id>....). Он не меняется при переименовании файла."));
             scroll.Add(Hint("Выделите реплику, чтобы редактировать её."));
         }
 
@@ -223,9 +223,9 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
                 EditAnswer(answerId, "Текст ответа", target => target.Text = evt.newValue, answerId + ".text"));
             foldout.Add(text);
 
-            foldout.Add(ExpressionField("👁 Видимость", answer.VisibleIf, "нет условий: ответ виден всегда", false,
+            foldout.Add(ExpressionField("Видимость", answer.VisibleIf, "нет условий: ответ виден всегда", false,
                 value => EditAnswer(answerId, "Видимость ответа", target => target.VisibleIf = value, answerId + ".visible")));
-            foldout.Add(ExpressionField("🔒 Доступность", answer.EnabledIf, "нет условий: ответ доступен всегда", false,
+            foldout.Add(ExpressionField("Доступность", answer.EnabledIf, "нет условий: ответ доступен всегда", false,
                 value => EditAnswer(answerId, "Доступность ответа", target => target.EnabledIf = value, answerId + ".enabled")));
 
             var hint = new TextField("Подсказка") { value = answer.Hint };
@@ -234,7 +234,7 @@ namespace MIDIFrogs.DialogSystem.Editor.Window
                 EditAnswer(answerId, "Подсказка ответа", target => target.Hint = evt.newValue, answerId + ".hint"));
             foldout.Add(hint);
 
-            foldout.Add(ExpressionField("⚙ Действия", answer.Actions, "например: Gold -= 10; Met = true", true,
+            foldout.Add(ExpressionField("Действия", answer.Actions, "например: Gold -= 10; Met = true", true,
                 value => EditAnswer(answerId, "Действия ответа", target => target.Actions = value, answerId + ".actions")));
 
             var remove = new Button(() => editor.RemoveAnswer(lineId, answerId)) { text = "Удалить ответ" };
